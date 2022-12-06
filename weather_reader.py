@@ -31,13 +31,30 @@ def receive_before_cursor_execute(
 
 url = 'https://drive.google.com/uc?id=1mOzthsIlHLlAMhxMN5DuUGuEFm-qBX42'
 output = './city_locations.csv'
-gdown.download(url, output, quiet=False)
+gdown.download(url, output, quiet=True)
 
-df = pd.read_csv(output)
+city_locations_df = pd.read_csv(output)
 
-df.to_sql(con=database_connection, name='city_locations', index = False, 
-                if_exists='replace')
+# df.to_sql(con=database_connection, name='city_locations', index = False, 
+#                 if_exists='replace')
 
+table_name = "city_locations"
+with open('./sql_files/city_locations.sql', 'w') as f:
+    f.write(f"""
+drop table {table_name};
+create table {table_name} (
+    city    		    VARCHAR(100),    
+    country             VARCHAR(100),    
+    latitutde           DECIMAL(10, 5),
+    longitude           DECIMAL(10, 5)
+);
+    """)
+
+    values = [str(val) for val in list(city_locations_df.itertuples(index=False, name = None))]
+    statement = f"""
+INSERT INTO {table_name} VALUES {",".join(values)};
+    """
+    f.write(statement)
 
 ##################
 # Weather        #
@@ -76,8 +93,15 @@ weather_df['datetime']= pd.to_datetime(weather_df['datetime'])
 # weather_df['city_name'] = weather_df['city_name'].astype('|S80')
 # weather_df['description'] = weather_df['description'].astype('|S80')
 
+
 weather_df = weather_df[weather_df['datetime'] > pd.Timestamp(2015, 1, 1)]
+# weather_df = weather_df.head()
 weather_df = weather_df.astype('str')
+
+new = weather_df['datetime'].str.split(" ", expand = True)
+weather_df = weather_df.drop(['datetime'], errors = 'ignore', axis = 1)
+weather_df.insert(0, 'date', new[0])
+weather_df.insert(1, 'time', new[1])
 
 table_name = "weather"
 field_names = ['']
@@ -85,7 +109,8 @@ with open('./sql_files/weather.sql', 'w') as f:
     f.write(f"""
 drop table {table_name};
 create table {table_name} (
-    date_recorded		DATETIME,
+    date_recorded   	DATE,
+    time_recorded   	TIME,
     city_name		    VARCHAR(100),    
     humidity		    DECIMAL(5, 2),
     pressure		    DECIMAL(7, 2),
@@ -102,6 +127,7 @@ create table {table_name} (
     INSERT INTO {table_name} VALUES {",".join(values)};
         """
         f.write(statement)
+        
 # import time 
 # start = time.time()
 # weather_df.to_sql(con=database_connection, name='weather', 
