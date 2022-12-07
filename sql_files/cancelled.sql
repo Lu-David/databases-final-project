@@ -5,7 +5,7 @@ create table cancelled (
     carrier_code	    VARCHAR(2),
     tail_num		    VARCHAR(100),
     origin			    VARCHAR(3),
-    destination		    VARCHAR(3),
+    destination		    VARCHAR(3)
 );
 INSERT INTO cancelled VALUES ( 388, '2016-12-1', 'AA', 'N950AA', 'LGA', 'DCA' );
 INSERT INTO cancelled VALUES ( 402, '2016-12-1', 'AA', 'N950AA', 'DCA', 'LGA' );
