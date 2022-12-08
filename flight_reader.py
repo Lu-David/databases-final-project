@@ -17,7 +17,7 @@ def format_date(date):
 def format_time(time):
     while len(time) < 4:
         time = "".join(["0", time])
-    return f"{time[0]}{time[1]}:{time[2]}{time[3]}"
+    return f"{time[0]}{time[1]}:{time[2]}{time[3]}:00"
 
 def format_minutes(minutes):
     minutes = minutes.split(".")
