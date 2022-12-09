@@ -5,11 +5,11 @@
 
 <?php
 // require_once ('./jpgraph.php');
-//require_once ('jpgraph_line.php');
+// require_once ('jpgraph_line.php');
 $dbhost = 'dbase.cs.jhu.edu';
-$dbuser = '22fa_tjung8';
-$dbpass = 'OiJPmTsrwr';
-$dbname = '22fa_tjung8_db';
+$dbuser = $_ENV["USER"];
+$dbpass = $_ENV["PASSWORD"];
+$dbname = $_ENV["DB"];
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s<br>", mysqli_connect_error());
