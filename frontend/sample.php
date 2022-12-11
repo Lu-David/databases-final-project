@@ -58,15 +58,15 @@ $p1 = new LinePlot($datay);
 $p1->SetColor("red");
 $p1->SetLegend("Pressure");
 
-// Create the bar plot
-$b1 = new BarPlot($databary);
-$b1->SetLegend("Temperature");
-$b1->SetAbsWidth(6);
-$b1->SetShadow();
+// // Create the bar plot
+// $b1 = new BarPlot($databary);
+// $b1->SetLegend("Temperature");
+// $b1->SetAbsWidth(6);
+// $b1->SetShadow();
 
 // The order the plots are added determines who's ontop
 $graph->Add($p1);
-$graph->Add($b1);
+// $graph->Add($b1);
 
 // Finally output the  image
 $graph->Stroke();
