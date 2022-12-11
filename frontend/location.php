@@ -47,18 +47,26 @@ if ($mysqli->multi_query("CALL getWeather('".$date."', '".$location."');")) {
 $width=400;
 $height=400;
  
-// Create the graph and set a scale.
-// These two calls are always required
-$graph = new Graph($width,$height);
-$graph->SetScale('intlin');
- 
-// Create the linear plot
+$graphTemp = new Graph($width,$height);
+$graphTemp->SetScale('intlin');
 $lineplot=new LinePlot($temperature);
- 
-// Add the plot to the graph
-$graph->Add($lineplot);
- 
-// Display the graph
-$graph->Stroke();
+$graphTemp->Add($lineplot);
+$img = $graphTemp->Stroke(_IMG_HANDLER);
+ob_start();
+imagepng($img);
+$imageDataTemp = ob_get_contents();
+ob_end_clean();
+
+$graphHum = new Graph($width,$height);
+$graphHum->SetScale('intlin');
+$lineplot=new LinePlot($humidity);
+$graphHum->Add($lineplot);
+$img = $graphHum->Stroke(_IMG_HANDLER);
+ob_start();
+imagepng($img);
+$imageDataHum = ob_get_contents();
+ob_end_clean();
 
 ?>
+<img src="data:image/png;base64,<?php echo(base64_encode($imageDataTemp)); ?>" />
+<img src="data:image/png;base64,<?php echo(base64_encode($imageDataHum)); ?>" />
