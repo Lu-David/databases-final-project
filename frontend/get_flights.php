@@ -4,9 +4,7 @@
 <body>
 
 <?php
-// require_once ('./jpgraph.php');
-// require_once ('jpgraph_line.php');
-$dbhost = 'dbase.cs.jhu.edu';
+$dbhost = $_ENV["HOST"];;
 $dbuser = $_ENV["USER"];
 $dbpass = $_ENV["PASSWORD"];
 $dbname = $_ENV["DB"];
