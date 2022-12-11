@@ -34,7 +34,6 @@ SELECT departure_delay, wind_speed FROM
     AND flights.dep_time_floor = weather.time_recorded 
     AND flights.date = weather.date_recorded
     AND flights.flight_id = delays.flight_id
-    AND description LIKE "%fog%" 
     LIMIT num_points;
 |
 DELIMITER ;
