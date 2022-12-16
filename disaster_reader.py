@@ -23,6 +23,7 @@ def get_disasters(file_name):
         return data
 
 def disasters_to_sql(input, output):
+    fema = set()
     with open(input) as csvfile:
         with open(output, "a") as sql_file:
             reader = csv.reader(csvfile, delimiter=",")
@@ -30,12 +31,14 @@ def disasters_to_sql(input, output):
             for row in reader:
                 if not first and 2012 <= int(row[5]) <= 2017:
                     date = format_date(row[4])
-                    sql_file.write(f"INSERT INTO disasters VALUES ( '{row[0]}', '{row[2]}', '{date}', '{row[6]}' );\n")
+                    if (row[0], row[2], date) not in fema:
+                        fema.add((row[0], row[2], date))
+                        sql_file.write(f"INSERT INTO disasters VALUES ( '{row[0]}', '{row[2]}', '{date}', '{row[6]}' );\n")
                 else:
                     first = False
 
 def main():
-    disasters_to_sql("datasets/disasters.csv", "sql_files/disasters.sql")
+    disasters_to_sql("datasets/disasters.csv", "sql_files/sql_dataset_files/disasters.sql")
 
 if __name__ == "__main__":
     main()
