@@ -33,7 +33,9 @@ SELECT departure_delay, wind_speed FROM
     AND airports.city = weather.city_name 
     AND flights.dep_time_floor = weather.time_recorded 
     AND flights.date = weather.date_recorded
-    AND flights.flight_id = delays.flight_id
+    AND flights.date = delays.date 
+    AND flights.tail_num = delays.tail_num
+    AND flights.flight_num = delays.flight_num
     LIMIT num_points;
 |
 DELIMITER ;
