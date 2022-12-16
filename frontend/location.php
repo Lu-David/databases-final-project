@@ -1,12 +1,13 @@
 <?php // content="text/plain; charset=utf-8"
+require_once("putenv.php");
 require_once ('jpgraph/src/jpgraph.php');
 require_once ('jpgraph/src/jpgraph_line.php');
 require_once ('jpgraph/src/jpgraph_bar.php');
 
-$dbhost = 'dbase.cs.jhu.edu';
-$dbuser = '22fa_tjung8';
-$dbpass = 'OiJPmTsrwr';
-$dbname = '22fa_tjung8_db';
+$dbhost = $_ENV["HOST"];
+$dbuser = $_ENV["USER"];
+$dbpass = $_ENV["PASSWORD"];
+$dbname = $_ENV["DB"];
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
 // function to allow for more queries with procedures using mysqli
