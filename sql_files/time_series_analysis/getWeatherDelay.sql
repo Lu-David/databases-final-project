@@ -16,6 +16,3 @@ SELECT AVG(departure_delay), STDDEV(departure_delay) FROM
     AND description LIKE regex;
 |
 DELIMITER ;
-
-CREATE INDEX f_date_index ON flights (date);
-CREATE INDEX w_date_index ON weather (date_recorded);
