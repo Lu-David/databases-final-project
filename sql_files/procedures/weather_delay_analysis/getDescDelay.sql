@@ -1,6 +1,6 @@
-DROP PROCEDURE IF EXISTS getWeatherDelay;
+DROP PROCEDURE IF EXISTS getDescDelay;
 DELIMITER |
-CREATE PROCEDURE getWeatherDelay (IN regex VARCHAR(20))
+CREATE PROCEDURE getDescDelay (IN regex VARCHAR(20))
 SELECT AVG(departure_delay), STDDEV(departure_delay) FROM 
     (
     SELECT *, DATE_FORMAT(flights.departure_time,'%H:00:00') 
@@ -12,7 +12,9 @@ SELECT AVG(departure_delay), STDDEV(departure_delay) FROM
     AND airports.city = weather.city_name 
     AND flights.dep_time_floor = weather.time_recorded 
     AND flights.date = weather.date_recorded
-    AND flights.flight_id = delays.flight_id
+    AND flights.date = delays.date 
+    AND flights.tail_num = delays.tail_num
+    AND flights.flight_num = delays.flight_num
     AND description LIKE regex;
 |
 DELIMITER ;
