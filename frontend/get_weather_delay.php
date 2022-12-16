@@ -26,11 +26,6 @@ if ($mysqli -> multi_query('CALL getWeatherDelay("%clear%"); CALL getWeatherDela
       }
      $result -> free_result();
     }
-    // if there are more result-sets, the print a divider
-    // if ($mysqli -> more_results()) {
-    //   printf("-------------\n");
-    // }
-     //Prepare next result set
   } while ($mysqli -> next_result());
 }
 
@@ -44,8 +39,6 @@ $graph->SetScale("textlin");
 
 // Specify X-labels
 $graph->xaxis->SetTickLabels($xlabels);
-// $graph->xaxis->SetTextLabelInterval(1);
-// $graph->xaxis->SetTextTickInterval(3);
 
 // Set title and subtitle
 $graph->title->Set("Average Delay Minutes for each Weather");
@@ -61,6 +54,5 @@ $b1->SetWidth(0.4);
 $graph->Add($b1);
 
 // Finally output the  image
-$graph->Stroke();
-
+$img = $graph->Stroke();
 ?>

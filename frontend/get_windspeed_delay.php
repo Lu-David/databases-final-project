@@ -16,7 +16,7 @@ if (mysqli_connect_errno()) {
 
 $delays = array();
 $wind_speeds = array();
-if ($mysqli->multi_query("CALL getWindSpeedDelay(10000);")) {
+if ($mysqli->multi_query("CALL getWindSpeedDelay(1000);")) {
     if ($result = $mysqli->store_result()) {
         $row = $result->fetch_row();
         if (count($row) == 1) {
@@ -40,7 +40,7 @@ $graph->SetScale("linlin");
 $graph->img->SetMargin(40,40,40,40);
 $graph->SetShadow();
 
-$graph->title->Set("A simple scatter plot");
+$graph->title->Set("Windspeed vs delay minutes");
 
 $sp1 = new ScatterPlot($delays,$wind_speeds);
 
