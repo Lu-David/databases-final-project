@@ -39,7 +39,7 @@ city_locations_df = pd.read_csv(output)
 #                 if_exists='replace')
 
 table_name = "city_locations"
-with open('./sql_files/city_locations.sql', 'w') as f:
+with open('./sql_files/sql_dataset_files/city_locations.sql', 'w') as f:
     f.write(f"""
 drop table {table_name};
 create table {table_name} (
@@ -105,7 +105,7 @@ weather_df.insert(1, 'time', new[1])
 
 table_name = "weather"
 field_names = ['']
-with open('./sql_files/weather.sql', 'w') as f:
+with open('./sql_files/sql_dataset_files/weather.sql', 'w') as f:
     f.write(f"""
 drop table {table_name};
 create table {table_name} (
@@ -114,7 +114,7 @@ create table {table_name} (
     city_name		    VARCHAR(100),    
     humidity		    DECIMAL(5, 2),
     pressure		    DECIMAL(7, 2),
-    temperature		    DECIMAL(10, 5),
+    temperature		    DECIMAL(32, 16),
     description		    VARCHAR(1000),
     wind_direction		SMALLINT,
     wind_speed		    SMALLINT
@@ -126,6 +126,7 @@ create table {table_name} (
         statement = f"""
     INSERT INTO {table_name} VALUES {",".join(values)};
         """
+        statement = statement.replace("'nan'", "NULL")
         f.write(statement)
         
 # import time 
