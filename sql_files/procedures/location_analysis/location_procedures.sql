@@ -43,10 +43,10 @@ DELIMITER ;
 /*Only delays for departure from given city*/
 DROP PROCEDURE IF EXISTS locationDelays;
 DELIMITER |
-CREATE PROCEDURE locationDelays (IN target_date VARCHAR(10), IN target_city VARCHAR(10))
+CREATE PROCEDURE locationDelays (IN target_date VARCHAR(10), IN target_city VARCHAR(100))
     SELECT f.origin, AVG(d.weather_delay) avg_weather_delay, AVG(NAS_delay) avg_NAS_delay, AVG(security_delay) avg_security_delay, AVG(late_aircraft_delay) avg_late_aircraft
     FROM flights f, airports a, delays d
-    WHERE a.city=target_city AND a.airport_code=f.origin AND f.date=target_date AND f.date=d.date AND f.tail_num=d.tail_num AND f.flight_num=d.flight_num
+    WHERE a.city=target_city AND a.airport_code=f.origin AND f.date=target_date AND f.flight_id=d.flight_id
     GROUP BY f.origin;
 |
 DELIMITER ;
