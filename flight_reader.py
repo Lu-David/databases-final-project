@@ -48,6 +48,7 @@ def flights_and_delays_to_sql(input, flight_output, delay_output, cancelled_outp
                             if row[14] == "1.00":
                                 cancels.append(f"({id}, '{date}', '{row[1]}', '{row[2]}', {row[3]}, '{row[4]}', '{row[7]}')")
                                 if len(cancels) >= 1000:
+                                    cancels = random.sample(cancels, k=len(cancels)//10)
                                     statement = f"""INSERT INTO cancelled VALUES {",".join(cancels)};\n"""
                                     cancelled_sql_file.write(statement)
                                     cancels = []
