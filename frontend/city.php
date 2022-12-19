@@ -8,6 +8,7 @@ $dbhost = $_ENV["HOST"];
 $dbuser = $_ENV["USER"];
 $dbpass = $_ENV["PASSWORD"];
 $dbname = $_ENV["DB"];
+
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
 // function to allow for more queries with procedures using mysqli
@@ -144,7 +145,6 @@ if ($mysqli->multi_query("CALL locationCancels('".$date."', '".$location."');"))
     printf("<br>Error: %s\n", $mysqli->error);
 }
 
-
 // Size of the overall graphs
 $width=400;
 $height=400;
@@ -241,6 +241,7 @@ ob_start();
 imagepng($img);
 $imageFlightIn = ob_get_contents();
 ob_end_clean();
+
 
 $graph = new Graph($width,$height,'auto');
 $graph->SetScale("textlin");
