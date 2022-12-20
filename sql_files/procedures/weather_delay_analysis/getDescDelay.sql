@@ -13,6 +13,12 @@ SELECT AVG(departure_delay), STDDEV(departure_delay) FROM
     AND flights.dep_time_floor = weather.time_recorded 
     AND flights.date = weather.date_recorded
     AND flights.flight_id = delays.flight_id
-    AND description LIKE regex;
+    AND description LIKE regex
 |
 DELIMITER ;
+
+DROP INDEX weather_idx on weather;
+CREATE INDEX weather_idx on weather(date_recorded, time_recorded, city_name);
+
+DROP INDEX flight_idx on flights;
+CREATE INDEX flight_idx on flights(date, departure_time);
