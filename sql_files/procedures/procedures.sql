@@ -157,3 +157,83 @@ CREATE PROCEDURE airlineStock (IN year YEAR, IN airline_name VARCHAR(100))
     WHERE YEAR(s.date)=year AND s.company=a.stock_code AND a.airline=airline_name
 |
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS airlineAccidents;
+DELIMITER |
+CREATE PROCEDURE airlineAccidents (IN year YEAR, IN airline_name VARCHAR(100))
+    SELECT f.date, COUNT(*)
+    FROM airline_company ac, flights f, accidents a
+    WHERE a.date=f.date AND a.tail_num=f.tail_num AND f.carrier_code=ac.carrier_code AND ac.airline=airline_name AND YEAR(f.date)=year
+    GROUP BY f.date;
+|
+DELIMITER ;
+
+/*airline analysis*/
+-- Get average delay for each airline over its entire history
+DROP PROCEDURE IF EXISTS getAirlineDelay
+DELIMITER |
+CREATE PROCEDURE getAirlineDelay()
+    SELECT carrier_code, AVG(departure_delay)
+    FROM delays NATURAL JOIN flights 
+    GROUP BY carrier_code;
+|
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS getFlightsPerDate;
+DELIMITER |
+CREATE PROCEDURE getFlightsPerDate (IN start_date VARCHAR(10), IN end_date VARCHAR(10))
+    SELECT date, COUNT(date)
+    FROM flights
+    WHERE date >= start_date AND date <= end_Date
+    GROUP BY date;
+|
+DELIMITER ;
+
+-- Get Stock Price data for each airline 
+DROP PROCEDURE IF EXISTS getStockPrice
+DELIMITER |
+CREATE PROCEDURE getStockPrice(IN target_date DATE)
+    SELECT company, open, close
+    FROM stocks
+    WHERE date = target_date;
+|
+DELIMITER ;
+
+/*weather delay analysis*/
+DROP PROCEDURE IF EXISTS getDescDelay;
+DELIMITER |
+CREATE PROCEDURE getDescDelay (IN regex VARCHAR(20))
+SELECT AVG(departure_delay), STDDEV(departure_delay) FROM 
+    (
+    SELECT *, DATE_FORMAT(flights.departure_time,'%H:00:00') 
+        AS dep_time_floor
+    FROM flights
+    ) AS flights, 
+    weather, airports, delays
+    WHERE airports.airport_code = flights.origin 
+    AND airports.city = weather.city_name 
+    AND flights.dep_time_floor = weather.time_recorded 
+    AND flights.date = weather.date_recorded
+    AND flights.flight_id = delays.flight_id
+    AND description LIKE regex;
+|
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS getWindSpeedDelay;
+DELIMITER |
+CREATE PROCEDURE getWindSpeedDelay (IN num_points INTEGER)
+SELECT departure_delay, wind_speed FROM 
+    (
+    SELECT *, DATE_FORMAT(flights.departure_time,'%H:00:00') 
+        AS dep_time_floor
+    FROM flights
+    ) AS flights, 
+    weather, airports, delays
+    WHERE airports.airport_code = flights.origin 
+    AND airports.city = weather.city_name 
+    AND flights.dep_time_floor = weather.time_recorded 
+    AND flights.date = weather.date_recorded
+    AND flights.flight_id = delays.flight_id
+    LIMIT num_points;
+|
+DELIMITER ;
