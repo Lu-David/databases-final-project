@@ -41,9 +41,11 @@ $graph->SetScale("textlin");
 
 // Specify X-labels
 $graph->xaxis->SetTickLabels($xlabels);
+$graph->xaxis->title->Set('day(s) after natural disaster occured');
+$graph->yaxis->title->Set('average cancellation count');
 
 // Set title and subtitle
-$graph->title->Set("Average Num cancellations for all disaster dates in db");
+// $graph->title->Set("Average Num cancellations for all disaster dates in db");
 
 // Use built in font
 $graph->title->SetFont(FF_FONT1,FS_BOLD);
