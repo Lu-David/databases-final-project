@@ -41,6 +41,8 @@ $graph->img->SetMargin(40,40,40,40);
 $graph->SetShadow();
 
 $graph->title->Set("Windspeed vs delay minutes");
+$graph->yaxis->title->Set('delay (min)');
+$graph->xaxis->title->Set('windspeed (mph)');
 
 $sp1 = new ScatterPlot($delays,$wind_speeds);
 

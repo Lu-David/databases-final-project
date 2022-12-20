@@ -39,6 +39,7 @@ $graph->SetScale("textlin");
 
 // Specify X-labels
 $graph->xaxis->SetTickLabels($xlabels);
+$graph->yaxis->title->Set('average delay (min)');
 
 // Set title and subtitle
 $graph->title->Set("Average Delay Minutes for each Weather");
