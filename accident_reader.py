@@ -1,8 +1,3 @@
-from dotenv import load_dotenv
-import gdown
-import pandas as pd
-import sqlalchemy as sal
-import os
 import csv
 
 def format_date(date):

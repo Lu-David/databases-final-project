@@ -4,7 +4,11 @@ CREATE TABLE airports (
 	state			VARCHAR(2),
 	city			VARCHAR(100),
 	size			VARCHAR(100),
-	primary key		(airport_code)
+	primary key		(airport_code),
+	foreign key         (city)
+        references      city_locations(city),
+	foreign key         (state)
+        references      city_locations(state)
 );
 INSERT INTO airports VALUES ( 'LAX', 'CA', 'Los Angeles', 'large_airport' );
 INSERT INTO airports VALUES ( 'JFK', 'NY', 'New York', 'large_airport' );
