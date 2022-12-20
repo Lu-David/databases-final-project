@@ -215,9 +215,15 @@ SELECT AVG(departure_delay), STDDEV(departure_delay) FROM
     AND flights.dep_time_floor = weather.time_recorded 
     AND flights.date = weather.date_recorded
     AND flights.flight_id = delays.flight_id
-    AND description LIKE regex;
+    AND description LIKE regex
 |
 DELIMITER ;
+
+DROP INDEX weather_idx on weather;
+CREATE INDEX weather_idx on weather(date_recorded, time_recorded, city_name);
+
+DROP INDEX flight_idx on flights;
+CREATE INDEX flight_idx on flights(date, departure_time);
 
 DROP PROCEDURE IF EXISTS getWindSpeedDelay;
 DELIMITER |
@@ -237,3 +243,53 @@ SELECT departure_delay, wind_speed FROM
     LIMIT num_points;
 |
 DELIMITER ;
+
+/*Disaster analysis*/
+DROP PROCEDURE IF EXISTS getAvgCancellations;
+DELIMITER |
+CREATE PROCEDURE getAvgCancellations (in offset INT)
+    SELECT AVG(cnt), STDDEV(cnt) FROM (
+        SELECT T.d_date, T.d_state, COUNT(c_id) as cnt FROM 
+        (
+            SELECT d.date as d_date, d.state as d_state, c_in.cancel_id as c_id
+            FROM cancelled as c_in JOIN airports as a_in 
+            ON c_in.destination = a_in.airport_code
+            JOIN (SELECT *, DATE_ADD(date, INTERVAL offset day) as d_off FROM disasters) as d
+            ON a_in.state = d.state AND c_in.date = d.d_off
+            UNION 
+            SELECT d.date as d_date, d.state as d_state, c_out.cancel_id as c_id
+            FROM cancelled as c_out JOIN airports as a_out 
+            ON c_out.destination = a_out.airport_code
+            JOIN (SELECT *, DATE_ADD(date, INTERVAL offset day) as d_off FROM disasters) as d
+            ON a_out.state = d.state AND c_out.date = d.d_off
+        ) as T GROUP BY T.d_date, T.d_state
+    ) AS U;
+|
+DELIMITER ;
+
+-- cancellation count by disaster type
+DROP PROCEDURE IF EXISTS getCancDisType;
+DELIMITER |
+CREATE PROCEDURE getCancDisType ()
+
+    SELECT T.d_type, COUNT(c_id) as cnt FROM 
+    (
+        SELECT d.incident_type as d_type, d.date as d_date, d.state as d_state, c_in.cancel_id as c_id
+        FROM cancelled as c_in JOIN airports as a_in 
+        ON c_in.destination = a_in.airport_code
+        JOIN (SELECT *, DATE_ADD(date, INTERVAL 0 day) as d_off FROM disasters) as d
+        ON a_in.state = d.state AND c_in.date = d.d_off
+        UNION 
+        SELECT d.incident_type as d_type, d.date as d_date, d.state as d_state, c_out.cancel_id as c_id
+        FROM cancelled as c_out JOIN airports as a_out 
+        ON c_out.destination = a_out.airport_code
+        JOIN (SELECT *, DATE_ADD(date, INTERVAL 0 day) as d_off FROM disasters) as d
+        ON a_out.state = d.state AND c_out.date = d.d_off
+    ) as T GROUP BY T.d_type;
+|
+DELIMITER ;
+
+DROP INDEX disaster_idx ON disasters;
+CREATE INDEX disaster_idx on disasters(state, date);
+DROP INDEX cancelled_idx ON cancelled;
+CREATE INDEX cancelled_idx on cancelled (origin, destination, date);

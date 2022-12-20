@@ -1,0 +1,2 @@
+Due to the large size of some of the sql files (weather, flight, delay), we decided to split it up into multiple files. To run the sql files, please run it in this order: datasets.sql -> weather.sql -> cancelled.sql -> flight.sql -> delay.sql.
+The order we run these files matter as we have foreign keys.
