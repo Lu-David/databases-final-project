@@ -247,8 +247,8 @@ INSERT INTO accidents VALUES ( '2015-02-10', 'N223PB', 'Isla de Vieques', 'Puert
 INSERT INTO accidents VALUES ( '2015-02-10', 'N953UW', 'Houston', 'Texas', 0, 0, 1 );
 INSERT INTO accidents VALUES ( '2015-01-03', 'N2534X', 'Key West', 'Florida', 0, 0, 4 );
 
-drop table city_locations;
-create table city_locations (
+DROP TABLE city_locations;
+CREATE TABLE city_locations (
     city    		    VARCHAR(100),
     state              VARCHAR(2),    
     country             VARCHAR(100),    
@@ -908,8 +908,8 @@ INSERT INTO fuel_costs VALUES ( 2017, 'October', 1.82 );
 INSERT INTO fuel_costs VALUES ( 2017, 'November', 1.87 );
 INSERT INTO fuel_costs VALUES ( 2017, 'December', 1.91 );
 
-drop table stocks;
-create table stocks (
+DROP TABLE stocks;
+CREATE TABLE stocks (
     company             VARCHAR(100),
     date 	            DATE,
     open        	    FLOAT,

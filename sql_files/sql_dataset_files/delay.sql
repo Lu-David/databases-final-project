@@ -1,5 +1,5 @@
-drop table delays;
-create table delays (
+DROP TABLE delays;
+CREATE TABLE delays (
     flight_id           INTEGER,
 	departure_delay	    INTEGER,
     arrival_delay	    INTEGER,
