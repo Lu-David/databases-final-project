@@ -23,8 +23,8 @@ if ($mysqli->multi_query("CALL getWindSpeedDelay(1000);")) {
             pass;
         } else {
             do {
-                array_push($delays, $row[0]);
-                array_push($wind_speeds, $row[1]);
+                array_push($delays, intval($row[0]));
+                array_push($wind_speeds, intval($row[1]));
             } while ($row = $result->fetch_row());
         }
         $result->close();
