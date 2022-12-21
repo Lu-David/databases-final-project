@@ -1,8 +1,8 @@
 <?php // content="text/plain; charset=utf-8"
 require_once("putenv.php");
-require_once ('jpgraph/src/jpgraph.php');
-require_once ('jpgraph/src/jpgraph_line.php');
-require_once ('jpgraph/src/jpgraph_bar.php');
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_line.php');
+require_once ('jpgraph/jpgraph_bar.php');
 
 $dbhost = $_ENV["HOST"];
 $dbuser = $_ENV["USER"];
