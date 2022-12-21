@@ -170,7 +170,7 @@ DELIMITER ;
 
 /*airline analysis*/
 -- Get average delay for each airline over its entire history
-DROP PROCEDURE IF EXISTS getAirlineDelay
+DROP PROCEDURE IF EXISTS getAirlineDelay;
 DELIMITER |
 CREATE PROCEDURE getAirlineDelay()
     SELECT carrier_code, AVG(departure_delay)
@@ -190,7 +190,7 @@ CREATE PROCEDURE getFlightsPerDate (IN start_date VARCHAR(10), IN end_date VARCH
 DELIMITER ;
 
 -- Get Stock Price data for each airline 
-DROP PROCEDURE IF EXISTS getStockPrice
+DROP PROCEDURE IF EXISTS getStockPrice;
 DELIMITER |
 CREATE PROCEDURE getStockPrice(IN target_date DATE)
     SELECT company, open, close
