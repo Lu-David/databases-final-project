@@ -1,7 +1,7 @@
 /* City specific queries: */
 DROP PROCEDURE IF EXISTS getWeather;
 DELIMITER |
-CREATE PROCEDURE getWeather (IN date VARCHAR(10), IN state VARCHAR(100))
+CREATE PROCEDURE getWeather (IN date VARCHAR(10), IN city VARCHAR(100))
     SELECT time_recorded, humidity, pressure, temperature, wind_direction, wind_speed
     FROM weather
     WHERE date_recorded=date and city_name=city
@@ -11,7 +11,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS getDisaster;
 DELIMITER |
-CREATE PROCEDURE getDisaster (IN target_date VARCHAR(10), IN target_state VARCHAR(100))
+CREATE PROCEDURE getDisaster (IN target_date VARCHAR(10), IN target_city VARCHAR(100))
     SELECT incident_type
     FROM disasters d, city_locations cl
     WHERE cl.city=target_city AND cl.state=d.state AND d.date=target_date;
@@ -20,7 +20,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS outgoingFlights;
 DELIMITER |
-CREATE PROCEDURE outgoingFlights (IN target_date VARCHAR(10), IN target_state VARCHAR(100))
+CREATE PROCEDURE outgoingFlights (IN target_date VARCHAR(10), IN target_city VARCHAR(100))
     SELECT f.origin, COUNT(*) outgoing_flights
     FROM flights f, airports a
     WHERE a.city=target_city AND a.airport_code=f.origin AND f.date=target_date
@@ -31,7 +31,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS incomingFlights;
 DELIMITER |
-CREATE PROCEDURE incomingFlights (IN target_date VARCHAR(10), IN target_state VARCHAR(100))
+CREATE PROCEDURE incomingFlights (IN target_date VARCHAR(10), IN target_city VARCHAR(100))
     SELECT f.destination, COUNT(*) incoming_flights
     FROM flights f, airports a
     WHERE a.city=target_city AND a.airport_code=f.destination AND f.date=target_date
