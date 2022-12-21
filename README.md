@@ -1,10 +1,10 @@
 # databases-final-project
 
-Data Sources
-https://www.transtats.bts.gov/Fields.asp?gnoyr_VQ=FGJ
+Final Project Report
+https://docs.google.com/document/d/14ud8m4CT_M_B2Uzo4IsiUu19u4Aa_4NyIileOWV1kug/edit?usp=sharing
 
-Dependencies
-- pip install csvkit (reference  https://stackoverflow.com/questions/9998596/create-mysql-table-directly-from-csv-file-using-the-csv-storage-engine)
+
+Data Loading Dependencies
 - pandas
 - mysql-connector-python
 - dotenv
